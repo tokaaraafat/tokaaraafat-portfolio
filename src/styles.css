@@ -1,0 +1,127 @@
+@import 'tailwindcss';
+
+/* Palette: soft linen / pale sage / green-charcoal with a sage accent.
+   Values live in CSS variables so the dark theme can swap them. */
+:root {
+  --bg: #f2f0e6;
+  --card: #faf9f3;
+  --sand: #e3e8d6;
+  --ink: #34403a;
+  --on-ink: #f7f6ee;
+  --muted: #66705f;
+  --line: #d5d9c6;
+  --sage: #62774f;
+  --panel: #3e4d44;
+  --panel-fg: #f4f2e8;
+}
+
+:root[data-theme='dark'] {
+  --bg: #222a25;
+  --card: #2b352f;
+  --sand: #2a332d;
+  --ink: #e8e9dc;
+  --on-ink: #222a25;
+  --muted: #a9b4a0;
+  --line: #3f4b42;
+  --sage: #a5b88f;
+  --panel: #1c231f;
+  --panel-fg: #e8e9dc;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-sand: var(--sand);
+  --color-ink: var(--ink);
+  --color-on-ink: var(--on-ink);
+  --color-muted: var(--muted);
+  --color-border: var(--line);
+  --color-sage: var(--sage);
+  --color-panel: var(--panel);
+  --color-panel-fg: var(--panel-fg);
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces', Georgia, ui-serif, serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 4.5rem;
+    color-scheme: light;
+  }
+
+  html[data-theme='dark'] {
+    color-scheme: dark;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    margin: 0;
+    min-width: 320px;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-sage;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--sage) 35%, transparent);
+  }
+}
+
+@layer utilities {
+  .section-pad {
+    @apply px-5 sm:px-8 lg:px-12;
+  }
+
+  .container-page {
+    @apply mx-auto w-full max-w-6xl;
+  }
+
+  .heading-display {
+    @apply font-display font-semibold tracking-tight text-ink;
+  }
+
+  /* Understated data-grid texture used behind the hero */
+  .bg-data-grid {
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    -webkit-mask-image: radial-gradient(ellipse at 70% 35%, #000 0, transparent 70%);
+    mask-image: radial-gradient(ellipse at 70% 35%, #000 0, transparent 70%);
+    opacity: 0.5;
+  }
+
+  .draw-line {
+    stroke-dasharray: 420;
+    stroke-dashoffset: 420;
+    animation: draw-line 2s 0.4s ease forwards;
+  }
+}
+
+@keyframes draw-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .draw-line {
+    stroke-dashoffset: 0;
+  }
+}
